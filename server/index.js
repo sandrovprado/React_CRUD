@@ -16,7 +16,7 @@ const db = mysql.createConnection({
 
 
 
-app.post('/create', (req,res) =>{
+app.post('/create', (req,res) =>{ //create request 
     const name = req.body.name
     const age = req.body.age
     const country = req.body.country
@@ -35,7 +35,7 @@ app.post('/create', (req,res) =>{
 });
 
 
-app.get('/employees', (req,res) =>{
+app.get('/employees', (req,res) =>{ //get info request 
     db.query('SELECT * FROM employees', (err,result) =>{
         if(err){
             console.log(err);
@@ -43,6 +43,29 @@ app.get('/employees', (req,res) =>{
             res.send(result);
         }
     });
+})
+
+app.put('/update', (req,res) =>{ //update request
+    const id = req.body.id
+    const wage = req.body.wage
+    db.query("UPDATE employees SET wage = ? WHERE id = ?" , [wage,id] , (err,result) =>{
+        if(err){
+            console.log(err);
+        }else{
+            res.send(result);
+        }
+    });
+}) 
+
+app.delete('/delete/:id', (req,res) =>{ //delete request 
+    const id = req.params.id
+    db.query("DELETE FROM employees WHERE id = ?" , id, (err,result) =>{
+        if(err){
+            console.log(err);
+        }else{
+            res.send(result);
+        }
+    })
 })
 
 app.listen(3001,()=>{
